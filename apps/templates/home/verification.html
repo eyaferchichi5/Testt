@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Conformity Check Results{% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Conformity Check</h4>
+                    <p class="card-category">Rapport</p>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                                <th>Identifier</th>
+                                <th>Existence dans SAP</th>
+                                <th>Dernier Inventaire Discovery</th>
+                                <th>Dernier Inventaire Physique</th>
+                            </thead>
+                            <tbody>
+                                {% for device in devices %}
+                                    <tr>
+                                        <td>{{ device.identifier }}</td>
+                                        <td>
+                                            <span class="{% if device.existance.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.existance.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.dernier_inventaire_discovery.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.dernier_inventaire_discovery.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.dernier_inventaire_physique.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.dernier_inventaire_physique.value }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

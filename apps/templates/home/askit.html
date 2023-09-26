@@ -1,0 +1,204 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Askit Table</h4>
+        <p class="card-category">Here is a subtitle for this table</p>
+      </div>
+      <div class="card-body">
+        <form method="get" action="{% url 'inventaire_table' %}">
+            <input type="text" name="numero_serie_filter" placeholder="Filter by numero_serie">
+            <button type="submit">Search</button>
+        </form>
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_file_inventaire' %}">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <div class="form-group">
+            <form method="GET" id="category_form">
+                {% csrf_token %}
+                <label for="category_select">Select Category:</label>
+                <select id="category_select" class="form-control" name="category_select">
+                    <option value="" {% if not selected_category %}selected{% endif %}>All</option>
+                    {% for category in categories %}
+                        <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+        <div class="table-responsive">
+          <table id="inventaire_table" class="table">
+            <!-- Table header goes here -->
+            <thead class="text-primary">
+              <!-- Header columns go here -->
+              <th>Catégorie</th>
+              <th>Marque</th>
+              <th>Modèle</th>
+              <th>Code Matériel</th>
+              <th>Identifiant Réseau</th>
+              <th>Numéro de Série</th>
+              <th>Adresse IP</th>
+              <th>Mémoire</th>
+              <th>Statut</th>
+              <th>Utilisateur Principal</th>
+              <th>ID User</th>
+              <th>Date de Départ User</th>
+              <th>Dernier Login Connexion</th>
+              <th>Localisation Dernier Niveau</th>
+              <th>Emplacement</th>
+              <th>Département</th>
+              <th>Date de Livraison</th>
+              <th>Date de Première Installation</th>
+              <th>Date d'Installation</th>
+              <th>Dernier Inventaire Discovery</th>
+              <th>Dernier Inventaire Physique</th>
+              <th>Date de Sortie</th>
+              <th>Commentaire</th>              <!-- Add more header columns as needed -->
+            </thead>
+            <tbody>
+              {% for item in inventaires %}
+                <!-- Table row goes here -->
+                <tr>
+                  <td>{{ item.categorie_complete }}</td>
+                  <td>{{ item.marque }}</td>
+                  <td>{{ item.modele }}</td>
+                  <td>{{ item.code_materiel }}</td>
+                  <td>{{ item.identifiant_reseau }}</td>
+                  <td>{{ item.numero_serie }}</td>
+                  <td>{{ item.adresse_ip }}</td>
+                  <td>{{ item.memoire }}</td>
+                  <td>{{ item.statut }}</td>
+                  <td>{{ item.utilisateur_principal }}</td>
+                  <td>{{ item.id_user }}</td>
+                  <td>{{ item.date_depart_user }}</td>
+                  <td>{{ item.dernier_login_connexion }}</td>
+                  <td>{{ item.localisation_dernier_niveau }}</td>
+                  <td>{{ item.emplacement }}</td>
+                  <td>{{ item.departement }}</td>
+                  <td>{{ item.date_livraison }}</td>
+                  <td>{{ item.date_premiere_installation }}</td>
+                  <td>{{ item.date_installation }}</td>
+                  <td>{{ item.dernier_inventaire_discovery }}</td>
+                  <td>{{ item.dernier_inventaire_physique }}</td>
+                  <td>{{ item.date_sortie }}</td>
+                  <td>{{ item.commentaire }}</td>
+                  <!-- Add more table data cells as needed -->
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="pagination">
+          <!-- Pagination links go here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  // Function to update the table based on the selected category
+  function updateTable(selectedCategory) {
+    const tableBody = document.getElementById("inventaire_table").querySelector("tbody");
+    tableBody.innerHTML = ""; // Clear the table body
+
+    if (selectedCategory === "") {
+      // If All is selected, show all inventaires
+      {% for item in inventaires %}
+        // Table row goes here
+        tableBody.insertAdjacentHTML("beforeend", `
+          <tr>
+                  <td>{{ item.categorie_complete }}</td>
+                  <td>{{ item.marque }}</td>
+                  <td>{{ item.modele }}</td>
+                  <td>{{ item.code_materiel }}</td>
+                  <td>{{ item.identifiant_reseau }}</td>
+                  <td>{{ item.numero_serie }}</td>
+                  <td>{{ item.adresse_ip }}</td>
+                  <td>{{ item.memoire }}</td>
+                  <td>{{ item.statut }}</td>
+                  <td>{{ item.utilisateur_principal }}</td>
+                  <td>{{ item.id_user }}</td>
+                  <td>{{ item.date_depart_user }}</td>
+                  <td>{{ item.dernier_login_connexion }}</td>
+                  <td>{{ item.localisation_dernier_niveau }}</td>
+                  <td>{{ item.emplacement }}</td>
+                  <td>{{ item.departement }}</td>
+                  <td>{{ item.date_livraison }}</td>
+                  <td>{{ item.date_premiere_installation }}</td>
+                  <td>{{ item.date_installation }}</td>
+                  <td>{{ item.dernier_inventaire_discovery }}</td>
+                  <td>{{ item.dernier_inventaire_physique }}</td>
+                  <td>{{ item.date_sortie }}</td>
+                  <td>{{ item.commentaire }}</td>
+            <!-- Add more table data cells as needed -->
+          </tr>
+        `);
+      {% endfor %}
+    } else {
+      // Show inventaires for the selected category
+      {% for item in inventaires %}
+        if ("{{ item.categorie_complete }}" === selectedCategory) {
+          // Table row goes here
+          tableBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                  <td>{{ item.categorie_complete }}</td>
+                  <td>{{ item.marque }}</td>
+                  <td>{{ item.modele }}</td>
+                  <td>{{ item.code_materiel }}</td>
+                  <td>{{ item.identifiant_reseau }}</td>
+                  <td>{{ item.numero_serie }}</td>
+                  <td>{{ item.adresse_ip }}</td>
+                  <td>{{ item.memoire }}</td>
+                  <td>{{ item.statut }}</td>
+                  <td>{{ item.utilisateur_principal }}</td>
+                  <td>{{ item.id_user }}</td>
+                  <td>{{ item.date_depart_user }}</td>
+                  <td>{{ item.dernier_login_connexion }}</td>
+                  <td>{{ item.localisation_dernier_niveau }}</td>
+                  <td>{{ item.emplacement }}</td>
+                  <td>{{ item.departement }}</td>
+                  <td>{{ item.date_livraison }}</td>
+                  <td>{{ item.date_premiere_installation }}</td>
+                  <td>{{ item.date_installation }}</td>
+                  <td>{{ item.dernier_inventaire_discovery }}</td>
+                  <td>{{ item.dernier_inventaire_physique }}</td>
+                  <td>{{ item.date_sortie }}</td>
+                  <td>{{ item.commentaire }}</td>
+              <!-- Add more table data cells as needed -->
+            </tr>
+          `);
+        }
+      {% endfor %}
+    }
+  }
+
+  // Event listener for the category form submission
+  document.getElementById("category_form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const selectedCategory = document.getElementById("category_select").value;
+    updateTable(selectedCategory);
+  });
+
+  // Initial table update with all inventaires
+  updateTable("");
+</script>
+{% endblock javascripts %}

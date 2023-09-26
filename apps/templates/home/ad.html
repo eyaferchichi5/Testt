@@ -1,0 +1,103 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}AD Model{% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Active Directory (AD) </h4>
+                    <p class="card-category">Here is a subtitle for this table</p>
+                </div>
+                <div class="card-body">
+                    <form method="get" action="" class="form-inline mb-3">
+                        <div class="form-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ search_query }}">
+                            <button type="submit" class="btn btn-primary ml-2">Search</button>
+                        </div>
+                    </form>
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'upload_ad_file' %}">
+                        {% csrf_token %}
+                        {{ form }}
+                        <button type="submit" class="btn btn-primary" >Upload</button>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </thead>
+                            <tbody>
+                                {% for ad in ADs %}
+                                    <tr>
+                                        <td>{{ ad.nom }}</td>
+                                        <td>{{ ad.type }}</td>
+                                        <td>{{ ad.description }}</td>
+                                        <td>
+                                            <form method="post" action="{% url 'delete_ad' ad.nom %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn- btn-sm">Delete</button>
+                                            </form>
+                                            <a href="{% url 'edit_ad' ad.nom %}" class="btn btn-primary btn-sm">Edit</a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if ADs.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ ADs.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current-page">{{ ADs.number }}</span>
+
+                            {% if ADs.has_next %}
+                                <a href="?page={{ ADs.next_page_number }}">next</a>
+                                <a href="?page={{ ADs.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Display success notification if it exists -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        // Display the notification if there is a success message
+        var notification = '{{ messages }}';
+        if (notification) {
+            // You can customize the appearance and duration of the notification here
+            md.showNotification('top', 'center', 'success', notification);
+        }
+    });
+</script>
+{% endblock javascripts %}

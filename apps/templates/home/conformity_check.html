@@ -1,0 +1,84 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Conformity Check Results{% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Conformity Check</h4>
+                    <p class="card-category">Rapport</p>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                                <th>Identifier</th>
+                                <th>Sophos - Existence</th>
+                                <th>Sophos - Last Active</th>
+                                <th>Sophos - Health Status</th>
+                                <th>Sentinels - Existence</th>
+                                <th>Sentinels - Scan status</th>
+                                <th>Sentinels - Last active</th>
+                                <th>Defender -  Existence</th>
+                                <th>Defender - Exposure Level</th>
+                                <th>Defender - Antivirus Status</th>
+                                <th>Defender - Health Status</th>
+                                <th>Defender - Last Device Update</th>
+                            </thead>
+                            <tbody>
+                                {% for device in devices %}
+                                    <tr>
+                                        <td>{{ device.identifier }}</td>
+                                        <td>
+                                            <span class="{% if device.existance.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.existance.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.last_active.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.last_active.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.health_status.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.health_status.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.existance_sentinels.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.existance_sentinels.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.scan_status.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.scan_status.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.last_active_sentinels.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.last_active_sentinels.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.existance_defender.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.existance_defender.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.exposure_level.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.exposure_level.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.antivirus_status.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.antivirus_status.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.health_status_d.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.health_status_d.value }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="{% if device.last_device_update.status == 'Valide' %}text-success{% else %}text-danger{% endif %}">{{ device.last_device_update.value }}</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

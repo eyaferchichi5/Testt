@@ -1,0 +1,142 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Search {% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title"> Search </h4>
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="{% url 'search' %}">
+                        <div class="input-group mb-3">
+                            <input type="text" name="query" class="form-control" placeholder="Enter your search query" value="{{ query }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% if query %}
+                        <h2>Search Results for "{{ query }}"</h2>
+                        {% if results %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Model</th>
+                                        <th>Attributes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for model, items in results.items %}
+                                        <tr>
+                                            <td>{{ model }}</td>
+                                            <td>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Attribute</th>
+                                                            <th>Value</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for item in items %}
+                                                            {% if model == 'Sophos' %}
+                                                                <tr>
+                                                                    <td>health_status</td>
+                                                                    <td>{{ item.health_status }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>name</td>
+                                                                    <td>{{ item.name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>ip</td>
+                                                                    <td>{{ item.ip }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>os</td>
+                                                                    <td>{{ item.os }}</td>
+                                                                </tr>
+                                                            {% elif model == 'Askit' %}
+                                                                <tr>
+                                                                    <td>categorie_complete</td>
+                                                                    <td>{{ item.categorie_complete }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>marque</td>
+                                                                    <td>{{ item.marque }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>modele</td>
+                                                                    <td>{{ item.modele }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>code_materiel</td>
+                                                                    <td>{{ item.code_materiel }}</td>
+                                                                </tr>
+                                                            {% elif model == 'Sentinels' %}
+                                                                <tr>
+                                                                    <td>endpoint_name</td>
+                                                                    <td>{{ item.endpoint_name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>site</td>
+                                                                    <td>{{ item.site }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>last_logged_in_user</td>
+                                                                    <td>{{ item.last_logged_in_user }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>os_username</td>
+                                                                    <td>{{ item.os_username }}</td>
+                                                                </tr>
+                                                            {% elif model == 'AD' %}
+                                                                <tr>
+                                                                    <td>nom</td>
+                                                                    <td>{{ item.nom }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>type</td>
+                                                                    <td>{{ item.type }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>description</td>
+                                                                    <td>{{ item.description }}</td>
+                                                                </tr>
+                                                            {% elif model == 'Defender' %}
+                                                                <tr>
+                                                                    <td>device_id</td>
+                                                                    <td>{{ item.device_id }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>device_name</td>
+                                                                    <td>{{ item.device_name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>domain</td>
+                                                                    <td>{{ item.domain }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>first_seen</td>
+                                                                    <td>{{ item.first_seen }}</td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p>No results found.</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

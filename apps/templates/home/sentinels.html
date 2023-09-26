@@ -1,0 +1,197 @@
+<!-- sentinels_table.html -->
+{% extends "layouts/base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Sentinels Table</h4>
+        <p class="card-category">Here is a subtitle for this table</p>
+      </div>
+      <div class="card-body">
+        <form method="GET">
+          <div class="form-group">
+            <input type="text" name="q" class="form-control" placeholder="Search by name" value="{{ query }}">
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+              <form method="POST" enctype="multipart/form-data" action="{% url 'upload_file_sentinels' %}">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary" >Upload</button>
+        </form>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <th>Endpoint Name</th>
+              <th>Site</th>
+              <th>Last Logged-in User</th>
+              <th>OS Username</th>
+              <th>Group</th>
+              <th>Tags</th>
+              <th>Domain</th>
+              <th>Account</th>
+              <th>Console Visible IP</th>
+              <th>Agent Version</th>
+              <th>Serial Number</th>
+              <th>Last Active</th>
+              <th>Subscribed On</th>
+              <th>Health Status</th>
+              <th>Device Type</th>
+              <th>Model Name</th>
+              <th>OS</th>
+              <th>OS Version</th>
+              <th>Architecture</th>
+              <th>Memory</th>
+              <th>CPU Count</th>
+              <th>CPU Type</th>
+              <th>Core Count</th>
+              <th>Management Connectivity</th>
+              <th>Network Status</th>
+              <th>Update Status</th>
+              <th>Scan Status</th>
+              <th>MAC Addresses</th>
+              <th>IP Addresses</th>
+              <th>Last Reported IP</th>
+              <th>Pending Uninstall</th>
+              <th>Disk Encryption</th>
+              <th>Vulnerability Status</th>
+              <th>Agent UUID</th>
+              <th>Agent ID</th>
+              <th>Customer Identifier</th>
+              <th>Console Migration Status</th>
+              <th>Locations</th>
+              <th>Operational State</th>
+              <th>Operational State Expiration</th>
+              <th>Last Reboot Date</th>
+              <th>Installer Type</th>
+              <th>Reboot Required Due to Threat</th>
+              <th>User Action Required</th>
+              <th>Remote Profiling State</th>
+              <th>Remote Profiling Expiration</th>
+              <th>Storage Type</th>
+              <th>Storage Name</th>
+              <th>Cloud Account</th>
+              <th>Cloud Location</th>
+              <th>Cloud Network</th>
+              <th>Cloud Image</th>
+              <th>Cloud Tags</th>
+              <th>Cloud Instance Size</th>
+              <th>Cloud Instance ID</th>
+              <th>Cloud Security Group</th>
+              <th>Cluster Name</th>
+              <th>K8s Type</th>
+              <th>K8s Version</th>
+              <th>Agent Namespace</th>
+              <th>Agent Pod Name</th>
+              <th>K8s Node Name</th>
+              <th>K8s Node Labels</th>
+              <th>Is Uninstalled</th>
+              <th>Decommissioned At</th>
+            </thead>
+            <tbody>
+              {% for sentinel in sentinels %}
+              <tr>
+                <td>{{ sentinel.endpoint_name }}</td>
+                <td>{{ sentinel.site }}</td>
+                <td>{{ sentinel.last_logged_in_user }}</td>
+                <td>{{ sentinel.os_username }}</td>
+                <td>{{ sentinel.group }}</td>
+                <td>{{ sentinel.tags }}</td>
+                <td>{{ sentinel.domain }}</td>
+                <td>{{ sentinel.account }}</td>
+                <td>{{ sentinel.console_visible_ip }}</td>
+                <td>{{ sentinel.agent_version }}</td>
+                <td>{{ sentinel.serial_number }}</td>
+                <td>{{ sentinel.last_active }}</td>
+                <td>{{ sentinel.subscribed_on }}</td>
+                <td>{{ sentinel.health_status }}</td>
+                <td>{{ sentinel.device_type }}</td>
+                <td>{{ sentinel.model_name }}</td>
+                <td>{{ sentinel.os }}</td>
+                <td>{{ sentinel.os_version }}</td>
+                <td>{{ sentinel.architecture }}</td>
+                <td>{{ sentinel.memory }}</td>
+                <td>{{ sentinel.cpu_count }}</td>
+                <td>{{ sentinel.cpu_type }}</td>
+                <td>{{ sentinel.core_count }}</td>
+                <td>{{ sentinel.management_connectivity }}</td>
+                <td>{{ sentinel.network_status }}</td>
+                <td>{{ sentinel.update_status }}</td>
+                <td>{{ sentinel.scan_status }}</td>
+                <td>{{ sentinel.mac_addresses }}</td>
+                <td>{{ sentinel.ip_addresses }}</td>
+                <td>{{ sentinel.last_reported_ip }}</td>
+                <td>{{ sentinel.pending_uninstall }}</td>
+                <td>{{ sentinel.disk_encryption }}</td>
+                <td>{{ sentinel.vulnerability_status }}</td>
+                <td>{{ sentinel.agent_uuid }}</td>
+                <td>{{ sentinel.agent_id }}</td>
+                <td>{{ sentinel.customer_identifier }}</td>
+                <td>{{ sentinel.console_migration_status }}</td>
+                <td>{{ sentinel.locations }}</td>
+                <td>{{ sentinel.operational_state }}</td>
+                <td>{{ sentinel.operational_state_expiration }}</td>
+                <td>{{ sentinel.last_reboot_date }}</td>
+                <td>{{ sentinel.installer_type }}</td>
+                <td>{{ sentinel.reboot_required_due_to_threat }}</td>
+                <td>{{ sentinel.user_action_required }}</td>
+                <td>{{ sentinel.remote_profiling_state }}</td>
+                <td>{{ sentinel.remote_profiling_expiration }}</td>
+                <td>{{ sentinel.storage_type }}</td>
+                <td>{{ sentinel.storage_name }}</td>
+                <td>{{ sentinel.cloud_account }}</td>
+                <td>{{ sentinel.cloud_location }}</td>
+                <td>{{ sentinel.cloud_network }}</td>
+                <td>{{ sentinel.cloud_image }}</td>
+                <td>{{ sentinel.cloud_tags }}</td>
+                <td>{{ sentinel.cloud_instance_size }}</td>
+                <td>{{ sentinel.cloud_instance_id }}</td>
+                <td>{{ sentinel.cloud_security_group }}</td>
+                <td>{{ sentinel.cluster_name }}</td>
+                <td>{{ sentinel.k8s_type }}</td>
+                <td>{{ sentinel.k8s_version }}</td>
+                <td>{{ sentinel.agent_namespace }}</td>
+                <td>{{ sentinel.agent_pod_name }}</td>
+                <td>{{ sentinel.k8s_node_name }}</td>
+                <td>{{ sentinel.k8s_node_labels }}</td>
+                <td>{{ sentinel.is_uninstalled }}</td>
+                <td>{{ sentinel.decommissioned_at }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              {% if sentinels.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ sentinels.previous_page_number }}">Previous</a></li>
+              {% endif %}
+              {% for num in sentinels.paginator.page_range %}
+              {% if sentinels.number == num %}
+              <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+              {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+              {% endif %}
+              {% endfor %}
+              {% if sentinels.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ sentinels.next_page_number }}">Next</a></li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page Scripts goes HERE  -->
+{% block scripts %}{% endblock scripts %}

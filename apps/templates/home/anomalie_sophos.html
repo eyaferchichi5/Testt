@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Anomalies Results {% endblock %}
+{% block content %}
+
+<body>
+    <h1>Anomalies Sophos</h1>
+
+    {% if anomalies %}
+        <ul>
+            {% for anomaly in anomalies %}
+                <li>
+                    <strong>System :</strong> {{ anomaly.system_name }} <br>
+                    <strong>Last activity:</strong> {{ anomaly.last_active }} <br>
+                    <strong>Duration of inactivity:</strong> {{ anomaly.inactive_duration }} <br>
+                    <strong>Risk level:</strong> {{ anomaly.risk_level }} <br>
+
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune anomalie détectée.</p>
+    {% endif %}
+</body>
+{% endblock content %}

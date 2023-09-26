@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}SAP Table{% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">SAP Table</h4>
+                    <p class="card-category">Here is a subtitle for this table</p>
+                </div>
+                <div class="card-body">
+                    <form method="get" action="" class="form-inline mb-3">
+                        <div class="form-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search" value="{{ query }}">
+                            <button type="submit" class="btn btn-primary ml-2">Search</button>
+                        </div>
+                    </form>
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'upload_file_sap' %}">
+                        {% csrf_token %}
+                        {{ form }}
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-primary">
+                                <th>Domain</th>
+                                <th>Division</th>
+                                <th>Localisation</th>
+                                <th>Local</th>
+                                <th>Immobilisation</th>
+                                <th>NºS</th>
+                                <th>N°regr.immo.</th>
+                                <th>Numéro d'inventaire</th>
+                                <th>Désignation de l'immobilisation 1</th>
+                                <th>Désignation de l'immobilisation 2</th>
+                                <th>Code désignat.</th>
+                                <th>Mise serv.</th>
+                                <th>Comment.invent.</th>
+                                <th>Date inv.</th>
+                                <th>Numéro de série</th>
+                                <th>N° d'immatric.</th>
+                                <th>N° de projet d'investissement</th>
+                                <th>Disponibilité</th>
+                                <th>Fabricant de l'immobilisation</th>
+                                <th>Fournisseur 1</th>
+                                <th>Fournisseur 2</th>
+                                <th>Quantité</th>
+                                <th>UQ</th>
+                                <th>Compte CAP</th>
+                                <th>Cat.immo</th>
+                                <th>Centre</th>
+                                <th>ValAcqFinEx</th>
+                                <th>Dev.</th>
+                                <th>Amo.fin.ex.</th>
+                                <th>Dev.</th>
+                                <th>ValCptFinEx</th>
+                                <th>Dev.</th>
+                                <th>Mise h.s.</th>
+                                <th>Immo.d'orig.</th>
+                                <th>N°S. IEC</th>
+                                <th>Mo</th>
+                                <th>Valeur d'origine</th>
+                                <th>Dev.</th>
+                                <th>Valeur man. patr.</th>
+                                <th>Dev.</th>
+                                <th>CodAm</th>
+                                <th>Ut.</th>
+                                <th>Pér</th>
+                                <th>Début AD</th>
+                            </thead>
+                            <tbody>
+                                {% for sap_item in sap_items %}
+                                    <tr>
+                                        <td>{{ sap_item.doma }}</td>
+                                        <td>{{ sap_item.division }}</td>
+                                        <td>{{ sap_item.localisat }}</td>
+                                        <td>{{ sap_item.local }}</td>
+                                        <td>{{ sap_item.immobilis }}</td>
+                                        <td>{{ sap_item.n_s }}</td>
+                                        <td>{{ sap_item.n_regr_immobilisation }}</td>
+                                        <td>{{ sap_item.numero_inventaire }}</td>
+                                        <td>{{ sap_item.designation_immobilisatio1 }}</td>
+                                        <td>{{ sap_item.designation_immobilisatio2 }}</td>
+                                        <td>{{ sap_item.code_designat }}</td>
+                                        <td>{{ sap_item.mise_serv }}</td>
+                                        <td>{{ sap_item.comment_invent }}</td>
+                                        <td>{{ sap_item.date_inv }}</td>
+                                        <td>{{ sap_item.numero_serie }}</td>
+                                        <td>{{ sap_item.n_immatric }}</td>
+                                        <td>{{ sap_item.n_projet_investissement }}</td>
+                                        <td>{{ sap_item.disponibilite }}</td>
+                                        <td>{{ sap_item.fabricant_immobilisation }}</td>
+                                        <td>{{ sap_item.fournisseur1 }}</td>
+                                        <td>{{ sap_item.fournisseur2 }}</td>
+                                        <td>{{ sap_item.quantite }}</td>
+                                        <td>{{ sap_item.uq }}</td>
+                                        <td>{{ sap_item.compte_cap }}</td>
+                                        <td>{{ sap_item.cat_immo }}</td>
+                                        <td>{{ sap_item.centre }}</td>
+                                        <td>{{ sap_item.val_acq_fin_ex }}</td>
+                                        <td>{{ sap_item.dev_val_acq_fin_ex }}</td>
+                                        <td>{{ sap_item.amortissement_fin_ex }}</td>
+                                        <td>{{ sap_item.dev_amortissement_fin_ex }}</td>
+                                        <td>{{ sap_item.val_cpt_fin_ex }}</td>
+                                        <td>{{ sap_item.mise_hs }}</td>
+                                        <td>{{ sap_item.immo_d_orig }}</td>
+                                        <td>{{ sap_item.n_s_iec }}</td>
+                                        <td>{{ sap_item.mo }}</td>
+                                        <td>{{ sap_item.valeur_d_origine }}</td>
+                                        <td>{{ sap_item.dev_valeur_man_patr }}</td>
+                                        <td>{{ sap_item.valeur_man_patr }}</td>
+                                        <td>{{ sap_item.cod_am }}</td>
+                                        <td>{{ sap_item.ut }}</td>
+                                        <td>{{ sap_item.per }}</td>
+                                        <td>{{ sap_item.debut_ad }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if sap_items.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ sap_items.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current-page">{{ sap_items.number }}</span>
+
+                            {% if sap_items.has_next %}
+                                <a href="?page={{ sap_items.next_page_number }}">next</a>
+                                <a href="?page={{ sap_items.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

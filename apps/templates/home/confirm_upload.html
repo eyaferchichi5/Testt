@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Confirm Upload{% endblock title %}
+
+{% block stylesheets %}
+    <!-- Ajoutez les liens vers les fichiers CSS Bootstrap et jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Confirm Upload</h4>
+                </div>
+                <div class="card-body">
+                    <p>AD entries with the same name already exist:</p>
+                    <ul>
+                        {% for existing_ad in existing_ads %}
+                            <li>
+                                Name: {{ existing_ad.nom }}, Type: {{ existing_ad.type }}, Description: {{ existing_ad.description }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" id="confirmForm">
+                        {% csrf_token %}
+                        {% for ad in new_ads %}
+                            <input type="checkbox" name="new_ads" value="{{ ad.id }}" id="ad_{{ ad.id }}">
+                            <label for="ad_{{ ad.id }}">{{ ad.nom }}</label><br>
+                        {% endfor %}
+                        <button type="submit" name="action" value="add_new_ads" class="btn btn-primary">Add New Entries</button>
+                        <button type="submit" name="action" value="delete_existing_ads" class="btn btn-primary">Delete Existing Entries</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap Modal pour la confirmation -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirm Upload</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to proceed with the upload?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="confirmForm" name="action" value="add_new_ads" class="btn btn-primary">Add New Entries</button>
+                    <button type="submit" form="confirmForm" name="action" value="delete_existing_ads" class="btn btn-primary">Delete Existing Entries</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <!-- Ajoutez les liens vers les fichiers JavaScript Bootstrap et jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Afficher la fenêtre modale lorsque la page est chargée
+        $(document).ready(function() {
+            $('#confirmModal').modal('show');
+        });
+    </script>
+{% endblock javascripts %}

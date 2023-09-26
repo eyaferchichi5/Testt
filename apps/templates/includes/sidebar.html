@@ -1,0 +1,61 @@
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
+
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+        {% if request.user.is_authenticated %}
+
+          <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+            <a class="nav-link" href="/">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
+            <a class="nav-link" href="/page-user.html">
+              <i class="material-icons">person</i>
+              <p>User Profile</p>
+            </a>
+          </li>
+        <li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
+          <a class="nav-link" href="#" data-toggle="dropdown">
+            <i class="material-icons">content_paste</i>
+            <p>Table List</p>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/ad.html/">AD Table</a></li>
+            <li><a class="dropdown-item" href="/sophos.html/">Sophos Table</a></li>
+            <li><a class="dropdown-item" href="/askit.html/">Askit Table</a></li>
+            <li><a class="dropdown-item" href="/defender.html/">Defender Table</a></li>
+            <li><a class="dropdown-item" href="/sentinels.html/">Senitnels Table</a></li>
+          </ul>
+        </li>
+          <li class="nav-item {% if 'search' in segment %} active {% endif %}">
+            <a class="nav-link" href="/search_result.html">
+              <i class="material-icons">library_books</i>
+              <p>Search</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'conformity_check' in segment %} active {% endif %}">
+            <a class="nav-link" href="/conformity_check.html">
+              <i class="material-icons">bubble_chart</i>
+              <p>AD Report</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
+            <a class="nav-link" href="/verifiaction">
+              <i class="material-icons">notifications</i>
+              <p>Vérification de SAP</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'logout' %}" >
+              <i class="material-icons">directions_run</i>
+              <p>Logout</p>
+            </a>
+          </li>
+        {% else %}
+        {% endif %}
+        </ul>
+      </div>
+
+    </div>

@@ -1,0 +1,337 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  /* Couleur mauve pour la classe card-mauve */
+  .card-mauve {
+    color: purple;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats ">
+        <a href="{% url 'computer_table' %}">
+
+        <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">security</i>
+          </div>
+        <p class="card-category">Sophos</p>
+        <h3 class="card-title">{{ computers_value }}</h3>
+      </div>
+         </a>
+
+      <div class="card-footer">
+        <div class="stats">
+          <i ></i>
+          <a href="#pablo"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+          <a href="{% url 'inventaire_table' %}">
+         <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">computer</i>
+          </div>
+        <p class="card-category">Askit </p>
+        <h3 class="card-title">{{ inventory_ads_value }}</h3>
+      </div>
+          </a>
+      <div class="card-footer">
+        <div class="stats">
+          <i ></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+         <a href="{% url 'device_table' %}">
+        <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">lock</i>
+          </div>
+        <p class="card-category">Defender</p>
+        <h3 class="card-title">{{ devices_value }}</h3>
+      </div>
+         </a>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+         <a href="{% url 'sentinels_table' %}">
+        <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">shield</i>
+          </div>
+        <p class="card-category">Sentinels</p>
+        <h3 class="card-title">{{ sentinels_value }}</h3>
+      </div>
+         </a>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <a href="{% url 'ad_model' %}">
+
+        <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">desktop_mac</i>
+          </div>
+        <p class="card-category">Ad</p>
+        <h3 class="card-title">{{ ad_value }}</h3>
+      </div>
+        </a>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+<div class="row">
+<div class="col-md-4">
+  <div class="card card-chart" style="background-color: white;">
+    <div >
+      <canvas id="inventoryChart"></canvas>
+    </div>
+    <div class="card-body">
+      <p class="card-category">Askit Statistics</p>
+    </div>
+    <div class="card-footer">
+      <div class="stats">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('inventoryChart').getContext('2d');
+    var inventoryChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Stock', 'Service'],
+        datasets: [{
+          label: 'Inventory',
+          data: [{{ total_stock }}, {{ total_service }}],
+          backgroundColor: [
+            'rgba(204, 153, 255, 0.8)',
+            'rgba(153, 51, 255, 0.8)',
+          ],
+          borderColor: [
+            'rgba(204, 153, 255, 1)',
+            'rgba(153, 51, 255, 1)',
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          position: 'bottom',
+          labels: {
+            fontColor: '#333',
+            fontSize: 12
+          }
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var total = dataset.data.reduce(function(previousValue, currentValue) {
+                return previousValue + currentValue;
+              });
+              var currentValue = dataset.data[tooltipItem.index];
+              var percentage = Math.floor((currentValue / total) * 100 + 0.5);
+              return currentValue + ' (' + percentage + '%)';
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+
+
+
+<div class="col-md-4">
+  <div class="card card-chart">
+    <div >
+      <canvas id="deviceStatusChart"></canvas>
+    </div>
+    <div class="card-body">
+      <p class="card-category">Antivirus Status</p>
+    </div>
+    <div class="card-footer">
+      <div class="stats">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('deviceStatusChart').getContext('2d');
+    var deviceStatusChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Updated', 'Not Updated', 'Unknown'],
+        datasets: [{
+          label: 'Device Status',
+          data: [{{ updated_count }}, {{ not_updated_count }}, {{ unknown_count }}],
+          backgroundColor: [
+            'rgba(220, 153, 255, 0.8)',
+            'rgba(170, 136, 255, 0.8)',
+            'rgba(153, 51, 255, 0.8)',
+          ],
+          borderColor: [
+            'rgba(220, 153, 255, 1)',
+            'rgba(170, 136, 255, 1)',
+            'rgba(153, 51, 255, 0.8)',
+          ],
+          borderWidth: 1
+        }]
+
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          position: 'bottom',
+          labels: {
+            fontColor: '#333',
+            fontSize: 12
+          }
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var total = dataset.data.reduce(function(previousValue, currentValue) {
+                return previousValue + currentValue;
+              });
+              var currentValue = dataset.data[tooltipItem.index];
+              var percentage = Math.floor((currentValue / total) * 100 + 0.5);
+              return currentValue + ' (' + percentage + '%)';
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+
+<div class="col-md-4">
+  <div class="card card-chart">
+    <div >
+      <canvas id="vulnerabilityChart"></canvas>
+    </div>
+    <div class="card-body">
+      <p class="card-category"> Sentinels : Vulnerability Statistics</p>
+    </div>
+    <div class="card-footer">
+      <div class="stats">
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('vulnerabilityChart').getContext('2d');
+    var chartData = {
+      labels: ['Up to date', 'Requires patching'],
+      datasets: [{
+        data: [{{ up_to_date_count }}, {{ requires_patching_count }}],
+          backgroundColor: [
+            'rgba(204, 153, 255, 0.8)',
+            'rgba(153, 51, 255, 0.8)',
+          ],
+          borderColor: [
+            'rgba(204, 153, 255, 1)',
+            'rgba(153, 51, 255, 1)',
+          ],
+        borderWidth: 1
+      }]
+    };
+
+    var vulnerabilityChart = new Chart(ctx, {
+      type: 'pie',
+      data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          position: 'bottom',
+          labels: {
+            fontColor: '#333',
+            fontSize: 12
+          }
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var currentValue = dataset.data[tooltipItem.index];
+              var total = dataset.data.reduce(function(previousValue, currentValue) {
+                return previousValue + currentValue;
+              });
+              var percentage = Math.round((currentValue / total) * 100);
+              return dataset.label + ': ' + currentValue + ' (' + percentage + '%)';
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+{% endblock javascripts %}

@@ -1,0 +1,114 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tables {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Askit Table</h4>
+        <p class="card-category">Here is a subtitle for this table</p>
+      </div>
+      <div class="card-body">
+        <form method="GET">
+          <div class="form-group">
+            <input type="text" name="q" class="form-control" placeholder="Search by Network ID" value="{{ query }}">
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_file_inventaire' %}">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <div class="form-group">
+            <label for="category_select">Select Category:</label>
+            <select id="category_select" class="form-control" name="category_select">
+                <option value="" {% if not selected_category %}selected{% endif %}>All</option>
+                {% for category, data in categories_data.items %}
+                    <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="table-responsive">
+          <table id="inventaire_table" class="table">
+            <!-- Table header goes here -->
+            <thead class="text-primary">
+              <!-- Header columns go here -->
+              <th>Catégorie</th>
+              <th>Marque</th>
+              <th>Modèle</th>
+              <!-- Add more header columns as needed -->
+            </thead>
+            <tbody>
+              <!-- Table body goes here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="pagination">
+          <!-- Pagination links go here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  // Function to update the table based on the selected category
+  function updateTable(selectedCategory) {
+    const tableBody = document.getElementById("inventaire_table").querySelector("tbody");
+    tableBody.innerHTML = ""; // Clear the table body
+
+    if (selectedCategory === "") {
+      // If All is selected, show all inventaires
+      {% for item in inventaires %}
+        // Table row goes here
+        tableBody.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td>${{ item.categorie_complete }}</td>
+            <td>${{ item.marque }}</td>
+            <td>${{ item.modele }}</td>
+            <!-- Add more table data cells as needed -->
+          </tr>
+        `);
+      {% endfor %}
+    } else {
+      // Show inventaires for the selected category
+      const data = {{ categories_data | safe }};
+      const selectedData = data[selectedCategory];
+
+      for (const item of selectedData) {
+        // Table row goes here
+        tableBody.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td>${{ item.categorie_complete }}</td>
+            <td>${{ item.marque }}</td>
+            <td>${{ item.modele }}</td>
+            <!-- Add more table data cells as needed -->
+          </tr>
+        `);
+      }
+    }
+  }
+
+  // Event listener for the category select menu
+  document.getElementById("category_select").addEventListener("change", (event) => {
+    const selectedCategory = event.target.value;
+    updateTable(selectedCategory);
+  });
+
+  // Initial table update with all inventaires
+  updateTable("");
+</script>
+{% endblock javascripts %}

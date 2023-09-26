@@ -1,0 +1,111 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tables{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Defneder Table</h4>
+        <p class="card-category">Here is a subtitle for this table</p>
+      </div>
+      <div class="card-body">
+        <form class="form-inline mb-3" method="GET">
+          <div class="form-group">
+            <input type="text" class="form-control" id="searchInput" name="q" placeholder="Search by Device ID" value="{{ query }}">
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+              <form method="POST" enctype="multipart/form-data" action="{% url 'upload_file_device' %}">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary" >Upload</button>
+        </form>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <th>Device ID</th>
+              <th>Device Name</th>
+              <th>Domain</th>
+              <th>First Seen</th>
+              <th>Last Device Update</th>
+              <th>OS Platform</th>
+              <th>OS Distribution</th>
+              <th>OS Version</th>
+              <th>OS Build</th>
+              <th>Windows 10 Version</th>
+              <th>Tags</th>
+              <th>Group</th>
+              <th>Is AAD Joined</th>
+              <th>Device IPs</th>
+              <th>Risk Level</th>
+              <th>Exposure Level</th>
+              <th>Health Status</th>
+              <th>Onboarding Status</th>
+              <th>Device Role</th>
+              <th>Managed By</th>
+              <th>Antivirus Status</th>
+              <th>Is Internet Facing</th>
+            </thead>
+            <tbody>
+              {% for device in devices %}
+              <tr>
+                <td>{{ device.device_id }}</td>
+                <td>{{ device.device_name }}</td>
+                <td>{{ device.domain }}</td>
+                <td>{{ device.first_seen }}</td>
+                <td>{{ device.last_device_update }}</td>
+                <td>{{ device.os_platform }}</td>
+                <td>{{ device.os_distribution }}</td>
+                <td>{{ device.os_version }}</td>
+                <td>{{ device.os_build }}</td>
+                <td>{{ device.windows_10_version }}</td>
+                <td>{{ device.tags }}</td>
+                <td>{{ device.group }}</td>
+                <td>{{ device.is_aad_joined }}</td>
+                <td>{{ device.device_ips }}</td>
+                <td>{{ device.risk_level }}</td>
+                <td>{{ device.exposure_level }}</td>
+                <td>{{ device.health_status }}</td>
+                <td>{{ device.onboarding_status }}</td>
+                <td>{{ device.device_role }}</td>
+                <td>{{ device.managed_by }}</td>
+                <td>{{ device.antivirus_status }}</td>
+                <td>{{ device.is_internet_facing }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="pagination">
+          <span class="step-links">
+            {% if devices.has_previous %}
+              <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ devices.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current-page">{{ devices.number }}</span>
+
+            {% if devices.has_next %}
+              <a href="?page={{ devices.next_page_number }}">next</a>
+              <a href="?page={{ devices.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

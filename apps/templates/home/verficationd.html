@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vérification des doublons</title>
+</head>
+<body>
+    <h1>Doublons dans la base de données</h1>
+
+    {% if compteur_elements %}
+        <p>Liste des identifiants réseau et le nombre de fois qu'ils se répètent :</p>
+        <ul>
+            {% for identifiant, compteur in compteur_elements.items %}
+                <li>{{ identifiant }} ({{ compteur }} fois)</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Pas d'éléments dans la base de données.</p>
+    {% endif %}
+</body>
+</html>
